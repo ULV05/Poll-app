@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Пройти опрос - POLL.RU</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='take_poll.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <img src="{{ url_for('static', filename='iconh.png') }}" alt="Poll.ru logo">
+            <span class="logo-text">POLL.RU</span>
+        </div>
+
+        <h1>Пройти опрос</h1>
+
+        <div id="by-id" class="tab-content" style="display: block;">
+            <form action="/take_poll" method="GET">
+                <label for="poll-id">Введите ID опроса:</label>
+                <input type="number" id="poll-id" name="poll_id" required min="1">
+                <button type="submit" class="action-button">Перейти к опросу</button>
+            </form>
+        </div>
+
+        <a href="/" class="action-button home-link">Вернуться на главную</a>
+    </div>
+</body>
+</html>
