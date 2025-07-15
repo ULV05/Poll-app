@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Создание опроса</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='create.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <img src="{{ url_for('static', filename='iconh.png') }}" alt="Poll.ru logo">
+            <span class="logo-text">POLL.RU</span>
+        </div>
+
+        <h1 class="title">Создание опроса</h1>
+
+        <form method="POST" id="poll-form">
+            <label>Имя создателя:</label>
+            <input type="text" name="author" required>
+
+            <label>Тема опроса:</label>
+            <input type="text" name="title" required>
+
+            <label>Вопрос опроса:</label>
+            <input type="text" name="question" required>
+
+            <label>Варианты ответа:</label>
+            <div id="options-container">
+                <div class="option-wrapper">
+                    <input type="text" name="option1" placeholder="Вариант 1" required class="option-input">
+                    <button type="button" class="remove-option" style="display:none;">×</button>
+                </div>
+                <div class="option-wrapper">
+                    <input type="text" name="option2" placeholder="Вариант 2" required class="option-input">
+                    <button type="button" class="remove-option" style="display:none;">×</button>
+                </div>
+            </div>
+
+            <button type="button" id="add-option" class="add-option-button">+ Добавить вариант</button>
+
+            <div class="checkbox-row">
+                <input type="checkbox" id="multi" name="multiple">
+                <label for="multi">Выбор нескольких вариантов</label>
+            </div>
+
+            <button type="submit" class="submit-button">Создать опрос</button>
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const optionsContainer = document.getElementById('options-container');
+            let optionCounter = 2; 
+            
+            document.getElementById('add-option').addEventListener('click', function() {
+                optionCounter++;
+                const optionWrapper = document.createElement('div');
+                optionWrapper.className = 'option-wrapper';
+                
+                const newInput = document.createElement('input');
+                newInput.type = 'text';
+                newInput.name = 'option' + optionCounter;
+                newInput.placeholder = 'Вариант ' + optionCounter;
+                newInput.className = 'option-input';
+                
+                const removeBtn = document.createElement('button');
+                removeBtn.type = 'button';
+                removeBtn.className = 'remove-option';
+                removeBtn.textContent = '×';
+                removeBtn.style.display = 'inline-block';
+                removeBtn.addEventListener('click', function() {
+                    optionWrapper.remove();
+                });
+                
+                optionWrapper.appendChild(newInput);
+                optionWrapper.appendChild(removeBtn);
+                optionsContainer.appendChild(optionWrapper);
+            });
+            
+            if (optionsContainer.querySelectorAll('.option-input').length > 2) {
+                document.querySelectorAll('.remove-option').forEach(btn => {
+                    btn.style.display = 'inline-block';
+                });
+            }
+        });
+    </script>
+</body>
+</html>

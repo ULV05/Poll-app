@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ poll.title }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='poll.css') }}">
+</head>
+
+<body>
+    <div class="container">
+        <h1>{{ poll.title }}</h1>
+        <p class="author">Автор: {{ poll.author }}</p>
+        <p class="question">{{ poll.question }}</p>
+        
+        <form method="POST" action="{{ url_for('submit', poll_id=poll.id) }}">
+            {% for option_id, option in poll.options.items() %}
+                <div class="option">
+                    {% if poll.multiple %}
+                        <input type="checkbox"
+                               id="option{{ option_id }}"
+                               name="options"
+                               value="{{ option_id }}">
+                    {% else %}
+                        <input type="radio"
+                               id="option{{ option_id }}"
+                               name="option"
+                               value="{{ option_id }}"
+                               required>
+                    {% endif %}
+                    <label for="option{{ option_id }}">{{ option.text }}</label>
+                </div>
+            {% endfor %}
+            
+            <button type="submit" class="submit-button">Отправить</button>
+        </form>
+    </div>
+</body>
+</html>

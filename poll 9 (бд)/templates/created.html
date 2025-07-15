@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Опрос создан</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='created.css') }}">
+</head>
+<body>
+
+    <div class="container">
+        <div class="logo">
+            <img src="{{ url_for('static', filename='iconh.png') }}" alt="Poll.ru logo">
+            <span class="logo-text">POLL.RU</span>
+        </div>
+
+        <div class="success-message">
+            <h2>Опрос успешно создан!</h2>
+            <p>ID вашего опроса: <strong>{{ poll_id }}</strong></p>
+        </div>
+        
+        <div class="links">
+            <div class="link-item">
+                <h3>Ссылка для прохождения опроса:</h3>
+                <code id="poll-link">{{ poll_link }}</code>
+            </div>
+            
+            <div class="link-item">
+                <h3>Ссылка на результаты:</h3>
+                <code id="results-link">{{ results_link }}</code>
+            </div>
+        </div>
+        
+        <div class="buttons-container">
+            <button onclick="copyToClipboard('{{ poll_link }}')" class="copy-button">Копировать ссылку на опрос</button>
+            <button onclick="copyToClipboard('{{ results_link }}')" class="copy-button">Копировать ссылку на результаты</button>
+            <a href="/" class="home-button">Вернуться на главную</a>
+        </div>
+    </div>
+
+    <script>
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                alert('Ссылка скопирована в буфер обмена!');
+            });
+        }
+    </script>
+</body>
+</html>
