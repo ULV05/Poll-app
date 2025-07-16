@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Результаты: {{ poll.title }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='results.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <img src="{{ url_for('static', filename='iconh.png') }}" alt="Логотип">
+            <span class="logo-text">POLL.RU</span>
+        </div>
+        
+        <div class="header-section">
+            <p class="section-content">Тема опроса: {{ poll.title }}</p>
+            <p class="section-content">Автор: {{ poll.author }}</p>
+            <p class="section-content">ID опроса: {{ poll.id }}</p>
+            <p class="total-votes">Всего голосов: {{ total_votes }}</p>
+        </div>
+        
+        {% for question in questions %}
+            <div class="question-results">
+                <div class="question-header">
+                    <div class="question-number">Вопрос {{ loop.index }}</div>
+                    <div class="question-text">{{ question.text }}</div>
+                </div>
+
+                <div class="chart-wrapper">
+                    <div class="chart-container">
+                        <canvas id="chart-{{ question.id }}"></canvas>
+                    </div>
+                    
+                    <div class="results-container">
+                        {% for option in question.options %}
+                        <div class="result">
+                            <div class="option-text">{{ option.text }}</div>
+                            <div class="stats">
+                                <div class="bar" style="width: {{ option.percent }}%">
+                                    <span class="numbers {% if option.percent == 0 %}zero{% else %}non-zero{% endif %}">
+                                        {{ option.percent }}% ({{ option.votes }})
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+        
+        <div class="buttons-container">
+            <a href="/poll/{{ poll.id }}" class="action-button">Пройти опрос</a>
+            <a href="/" class="action-button home-link">Вернуться на главную</a>
+        </div>
+    </div>
+
+    <script>
+        const colorPalette = [
+            '#3498db', '#2ecc71', '#e74c3c', '#f1c40f', '#9b59b6',
+            '#1abc9c', '#d35400', '#34495e', '#16a085', '#c0392b'
+        ];
+
+        document.addEventListener('DOMContentLoaded', function() {
+            {% for question in questions %}
+            try {
+                const ctx = document.getElementById('chart-{{ question.id }}');
+                if (!ctx) return;
+                
+                const labels = [];
+                const data = [];
+                const backgroundColors = [];
+                
+                {% for option in question.options %}
+                labels.push('{{ option.text | safe }}');
+                data.push({{ option.votes }});
+                backgroundColors.push(colorPalette[{{ loop.index0 }} % colorPalette.length]);
+                {% endfor %}
+                
+                new Chart(ctx, {
+                    type: '{{ 'bar' if question.multiple else 'pie' }}',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            data: data,
+                            backgroundColor: backgroundColors,
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                        const percentage = Math.round((context.raw / total) * 100);
+                                        return `${context.label}: ${context.raw} (${percentage}%)`;
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: {
+                                    font: {
+                                        size: 10
+                                    }
+                                }
+                            },
+                            x: {
+                                ticks: {
+                                    font: {
+                                        size: 10
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            } catch (error) {
+                console.error('Ошибка при создании графика:', error);
+            }
+            {% endfor %}
+        });
+    </script>
+</body>
+</html>

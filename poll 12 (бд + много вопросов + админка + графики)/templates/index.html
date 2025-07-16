@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
+    <title>Платформа опросов</title>
+</head>
+
+<body>
+    <div class="container">
+        <div class="title">Веб-платформа для создания опросов</div>
+
+        <div class="logo">
+            <img src="/static/iconh.png" alt="Логотип">
+            <span class="logo-text">POLL.RU</span>
+        </div>
+
+        <a href="/create" class="btn">Создать опрос</a>
+        <a href="/poll" class="btn">Пройти опрос</a>
+        <a href="/view_results" class="btn">Результаты по ID</a>
+        <a href="/admin" class="btn">Админ-панель</a>
+    </div>
+</body>
+</html>

@@ -1,0 +1,205 @@
+body {
+    font-family: Arial, sans-serif;
+    background: white;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+}
+
+.container {
+    width: 600px;
+    margin-top: 40px;
+    padding-bottom: 40px;
+}
+
+.logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.logo img {
+    width: 40px;
+    height: 40px;
+}
+
+.logo-text {
+    font-size: 24px;
+    font-weight: bold;
+    margin-left: 10px;
+    color: #222;
+}
+
+.title {
+    font-size: 32px;
+    text-align: center;
+    margin-bottom: 30px;
+    font-weight: normal;
+}
+
+form label {
+    display: block;
+    font-size: 14px;
+    color: #444;
+    margin-top: 15px;
+    margin-bottom: 10px;
+}
+
+.option-input, .question-text-input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+
+.question-block {
+    background: #f9f9f9;
+    padding: 10px 15px;
+    border-radius: 4px;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #eee;
+}
+
+.question-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.remove-question {
+    background: #ff6b6b;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 2px 8px;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.remove-question:hover {
+    background: #ff5252;
+}
+
+.checkbox-row {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    gap: 8px;
+}
+
+.checkbox-row input {
+    margin: 0;
+    flex-shrink: 0;
+}
+
+.checkbox-row label {
+    margin: 0;
+    font-size: 14px;
+    color: #444;
+    cursor: pointer;
+}
+
+.submit-button, .home-button {
+    width: 100%;
+    padding: 12px 0;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    display: block;
+    transition: background-color 0.3s;
+    margin-top: 10px;
+}
+
+.submit-button {
+    background-color: #03A9F4;
+    color: white;
+}
+
+.submit-button:hover {
+    background-color: #007fcc;
+}
+
+.home-button {
+    background-color: #34a853;
+    color: white;
+}
+
+.home-button:hover {
+    background-color: #2d9248;
+}
+
+.add-option-button, .add-question-button {
+    width: 100%;
+    padding: 8px;
+    background-color: #f0f0f0;
+    border: 1px dashed #999;
+    border-radius: 4px;
+    color: #555;
+    font-size: 14px;
+    cursor: pointer;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    transition: background 0.2s;
+}
+
+.add-option-button:hover, .add-question-button:hover {
+    background-color: #e0e0e0;
+}
+
+.option-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.remove-option {
+    background: #ff6b6b;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    font-size: 12px;
+}
+
+.remove-option:hover {
+    background: #ff5252;
+}
+
+.buttons-container {
+    margin-top: 20px;
+}
+
+form input[type="text"]:not(.option-input):not(.question-text-input) {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    font-size: 14px;
+}
+
+form label:not(.checkbox-row label) {
+    display: block;
+    font-size: 14px;
+    color: #444;
+    margin-top: 15px;
+    margin-bottom: 10px;
+}

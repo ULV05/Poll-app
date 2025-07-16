@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Админ-панель</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='admin.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <img src="{{ url_for('static', filename='iconh.png') }}" alt="Poll.ru logo">
+            <span class="logo-text">POLL.RU</span>
+        </div>
+
+        <h1>Управление опросами</h1>
+        
+        <div class="admin-actions">
+            <a href="/" class="action-button">На главную</a>
+            <a href="/create" class="action-button">Создать опрос</a>
+            <a href="{{ url_for('admin_logout') }}" class="action-button logout-button">Выйти</a>
+        </div>
+
+        <div class="polls-list">
+            {% for poll in polls %}
+            <div class="poll-item">
+                <div class="poll-info">
+                    <h3>{{ poll.title }}</h3>
+                    <p>Автор: {{ poll.author }}</p>
+                    <p>Создан: {{ poll.created_at.strftime('%d.%m.%Y %H:%M') }}</p>
+                    <p>Вопросов: {{ poll.questions|length }}</p>
+                </div>
+                <div class="poll-actions">
+                    <a href="{{ url_for('results', poll_id=poll.id) }}" class="action-button">Результаты</a>
+                    <form action="{{ url_for('delete_poll', poll_id=poll.id) }}" method="POST">
+                        <button type="submit" class="action-button delete-button">Удалить</button>
+                    </form>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>
