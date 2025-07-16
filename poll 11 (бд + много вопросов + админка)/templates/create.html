@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Создание опроса</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='create.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <img src="{{ url_for('static', filename='iconh.png') }}" alt="Poll.ru logo">
+            <span class="logo-text">POLL.RU</span>
+        </div>
+
+        <h1 class="title">Создание опроса</h1>
+
+        <form method="POST" id="poll-form">
+            <label>Имя создателя:</label>
+            <input type="text" name="author" required>
+
+            <label>Тема опроса:</label>
+            <input type="text" name="title" required>
+
+            <div id="questions-container">
+                <div class="question-block" data-question-id="1">
+                    <div class="question-header">
+                        <label>Вопрос №1:</label>
+                        <button type="button" class="remove-question" style="display: none;">× Удалить вопрос</button>
+                    </div>
+                    <input type="text" name="question_1_text" required placeholder="Текст вопроса" class="question-text-input">
+                    
+                    <div class="checkbox-row">
+                        <input type="checkbox" id="multi_1" name="question_1_multiple">
+                        <label for="multi_1">Выбор нескольких вариантов</label>
+                    </div>
+
+                    <label>Варианты ответа:</label>
+                    <div class="options-container" data-question-id="1">
+                        <div class="option-wrapper">
+                            <input type="text" name="question_1_option_1" placeholder="Вариант 1" required class="option-input">
+                            <button type="button" class="remove-option" style="display:none;">×</button>
+                        </div>
+                        <div class="option-wrapper">
+                            <input type="text" name="question_1_option_2" placeholder="Вариант 2" required class="option-input">
+                            <button type="button" class="remove-option" style="display:none;">×</button>
+                        </div>
+                    </div>
+                    <button type="button" class="add-option" data-question-id="1">+ Добавить вариант</button>
+                </div>
+            </div>
+
+            <button type="button" id="add-question" class="add-question-button">+ Добавить вопрос</button>
+            <div class="buttons-container">
+                <button type="submit" class="submit-button">Создать опрос</button>
+                <a href="/" class="home-button">Вернуться на главную</a>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            let questionCounter = 1;
+            let optionCounters = {1: 2};
+
+            document.getElementById('add-question').addEventListener('click', function() {
+                questionCounter++;
+                optionCounters[questionCounter] = 2;
+
+                const questionBlock = document.createElement('div');
+                questionBlock.className = 'question-block';
+                questionBlock.dataset.questionId = questionCounter;
+
+                questionBlock.innerHTML = `
+                    <div class="question-header">
+                        <label>Вопрос №${questionCounter}:</label>
+                        <button type="button" class="remove-question">× Удалить вопрос</button>
+                    </div>
+                    <input type="text" name="question_${questionCounter}_text" required placeholder="Текст вопроса" class="question-text-input">
+                    
+                    <div class="checkbox-row">
+                        <input type="checkbox" id="multi_${questionCounter}" name="question_${questionCounter}_multiple">
+                        <label for="multi_${questionCounter}">Выбор нескольких вариантов</label>
+                    </div>
+
+                    <label>Варианты ответа:</label>
+                    <div class="options-container" data-question-id="${questionCounter}">
+                        <div class="option-wrapper">
+                            <input type="text" name="question_${questionCounter}_option_1" placeholder="Вариант 1" required class="option-input">
+                            <button type="button" class="remove-option" style="display:none;">×</button>
+                        </div>
+                        <div class="option-wrapper">
+                            <input type="text" name="question_${questionCounter}_option_2" placeholder="Вариант 2" required class="option-input">
+                            <button type="button" class="remove-option" style="display:none;">×</button>
+                        </div>
+                    </div>
+                    <button type="button" class="add-option" data-question-id="${questionCounter}">+ Добавить вариант</button>
+                `;
+
+                document.getElementById('questions-container').appendChild(questionBlock);
+                document.querySelectorAll('.remove-question').forEach(btn => {
+                    btn.style.display = 'inline-block';
+                });
+            });
+
+            document.addEventListener('click', function(e) {
+                if (e.target.classList.contains('remove-question')) {
+                    const questionBlock = e.target.closest('.question-block');
+                    if (document.querySelectorAll('.question-block').length > 1) {
+                        questionBlock.remove();
+                    } else {
+                        alert('Опрос должен содержать хотя бы один вопрос');
+                    }
+                }
+
+                if (e.target.classList.contains('add-option')) {
+                    const questionId = e.target.dataset.questionId;
+                    optionCounters[questionId] = (optionCounters[questionId] || 0) + 1;
+                    const optionsContainer = e.target.previousElementSibling;
+
+                    const optionWrapper = document.createElement('div');
+                    optionWrapper.className = 'option-wrapper';
+
+                    const newInput = document.createElement('input');
+                    newInput.type = 'text';
+                    newInput.name = `question_${questionId}_option_${optionCounters[questionId]}`;
+                    newInput.placeholder = `Вариант ${optionCounters[questionId]}`;
+                    newInput.className = 'option-input';
+
+                    const removeBtn = document.createElement('button');
+                    removeBtn.type = 'button';
+                    removeBtn.className = 'remove-option';
+                    removeBtn.textContent = '×';
+                    removeBtn.style.display = 'inline-block';
+                    removeBtn.addEventListener('click', function() {
+                        optionWrapper.remove();
+                    });
+
+                    optionWrapper.appendChild(newInput);
+                    optionWrapper.appendChild(removeBtn);
+                    optionsContainer.appendChild(optionWrapper);
+
+                    optionsContainer.querySelectorAll('.remove-option').forEach(btn => {
+                        btn.style.display = 'inline-block';
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
